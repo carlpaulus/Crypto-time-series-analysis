@@ -1,0 +1,32 @@
+PLANNING OF THE CRYPTO_FORECASTING TOOL DEVELOPMENT
+
+Topic chosen: "Cryptocurrency time-series analysis"
+
+packages: yfinance (easier) or cryptocompare (trickier but price-per-seconds available)
+
+#################### PART 1 ####################
+
+--> Determine the dataset
+    - choose the cryptos to work on. Maybe build some portfolios of cryptos later on.
+    - data in days, hours, seconds ? Which one is the most reliable to forecast the coming seconds, hours or days
+    - start & end dates should be parameters
+
+--> Run statistics:
+    - calculate basic stats : annualized returns & volatility, correlation between different cryptos, max drawdown,
+      calmar ratio (ann. returns / max drawdown), ann. Sharpe ratio ((Rp-Rf)/std), heatmap and clustermap (seaborn package)
+    - compare results of a regular SMA trading strategy and the WML strategy (wml overweights recent prices)
+    - Try the same on volumes instead of prices (creation of a technical indicator) = VOLUME-WEIGHTED MOVING AVERAGE
+
+#################### PART 2 #################### (we can do it for prices and volumes)
+
+--> Dimensionality reduction (especially if we use the "seconds" dataset)
+    - random projection, PCA/SVD or Autoencoders
+
+--> Regression
+    - linear regression, least-square method, coef of determination (is it to calculate the error?), non-linear regression
+    - optimization with chapter 4.5 "Interlude: Solving systems of equations numerically" of the Data Analytics course ?
+        + Find which training period is the best to forecast future prices
+
+--> Underfitting/Overfitting check ?
+
+--> Classification ?

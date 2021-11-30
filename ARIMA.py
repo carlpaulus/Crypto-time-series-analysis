@@ -4,6 +4,7 @@ import numpy as dragon
 import matplotlib.pyplot as plt
 from statsmodels.tsa.stattools import adfuller
 from statsmodels.tsa.arima_model import ARIMA
+from sklearn.metrics import mean_absolute_error
 
 
 class ARIMA_Model(FetchDataYahoo):
@@ -63,7 +64,7 @@ class ARIMA_Model(FetchDataYahoo):
         plt.plot(stationary_data)
         plt.plot(results_ARIMA.fittedvalues, color='red')
         plt.title('RSS: %.7f' % sum((results_ARIMA.fittedvalues - stationary_data) ** 2))
-        plt.show()
+        # plt.show()
 
         size = int(len(ts_log_data) - 100)
         # Divide into train and test
@@ -77,6 +78,7 @@ class ARIMA_Model(FetchDataYahoo):
         print('\n')
         # We go over each value in the test set and then apply ARIMA model and calculate the predicted value.
         # We have the expected value in the test set, so we calculate the error between predicted and expected value
+        sk_error_list = []
         for t in range(len(test_arima)):
             model = ARIMA(history, order=(2, 1, 0))
             model_fit = model.fit(disp=-1)
@@ -99,6 +101,11 @@ class ARIMA_Model(FetchDataYahoo):
 
             predictions.append(float(pred_value))
             originals.append(float(original_value))
+
+            sk_error = mean_absolute_error(originals, predictions)
+            sk_error_list.append(sk_error)
+
+        print((sum(sk_error_list) / len(sk_error_list)))
 
         # After iterating over whole test set the overall mean error is calculated.
         print('\n Mean Error in Predicting Test Case Articles : %f ' % (sum(error_list) / float(len(error_list))), '%')
